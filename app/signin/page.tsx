@@ -22,7 +22,7 @@ export default function Page() {
                 config.apiServer + '/api/user/signin',
                 payload
             );
-console.log(res.data)
+
             if (res.data.token !== undefined && res.data.token !== null) {
                 localStorage.setItem(config.token as string, res.data.token);
                 localStorage.setItem("next_name", res.data.name)
@@ -30,7 +30,7 @@ console.log(res.data)
                 localStorage.setItem("next_level", res.data.level)
                 localStorage.setItem("next_username", res.data.username)
                 localStorage.setItem("next_user_status", res.data.status)
-                router.push("backoffice")
+                router.push("backoffice/sale")
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -49,11 +49,11 @@ console.log(res.data)
     return (
         <div className="login-box">
             <div className="login-logo">
-                <b>POS</b> Food
+                ระบบบริหารร้านอาหาร  <b>POS</b> Food
             </div>
             <div className="card">
                 <div className="card-body login-card-body">
-                    <p className="login-box-msg">Sign in to start your session</p>
+                    <p className="login-box-msg">ล็อกอินเข้าระบบ</p>
                     <div>
                         <div className="input-group mb-3">
                             <input type="email" className="form-control" placeholder="Email"
@@ -76,10 +76,7 @@ console.log(res.data)
                         <div className="row">
                             <div className="col-8">
                                 <div className="icheck-primary">
-                                    <input type="checkbox" id="remember" />
-                                    <label htmlFor="remember">
-                                        Remember Me
-                                    </label>
+
                                 </div>
                             </div>
                             <div className="col-4">
@@ -89,20 +86,13 @@ console.log(res.data)
                         </div>
                     </div>
                     <div className="social-auth-links text-center mb-3">
-                        <p>- OR -</p>
-                        <a href="#" className="btn btn-block btn-primary">
-                            <i className="fab fa-facebook mr-2"></i> Sign in using Facebook
-                        </a>
-                        <a href="#" className="btn btn-block btn-danger">
-                            <i className="fab fa-google-plus mr-2"></i> Sign in using Google+
-                        </a>
+                        <div className="input-group-text mb-3">
+                            AdminDemo : admin / admin
+                        </div>
+                        <div className="input-group-text">
+                            UserDemo : porn / 123456
+                        </div>
                     </div>
-                    <p className="mb-1">
-                        <a href="forgot-password.html">I forgot my password</a>
-                    </p>
-                    <p className="mb-0">
-                        <a href="register.html" className="text-center">Register a new membership</a>
-                    </p>
                 </div>
             </div>
         </div>

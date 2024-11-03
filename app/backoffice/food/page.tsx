@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+/** JSX.IntrinsicAttributes */
 import MyModal from "@/app/component/my-modal";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
@@ -104,6 +104,7 @@ export default function Page() {
         setImg("");
         setId(0);
         setMyFile(null);
+        
     };
     const handleRemove = async (id: number) => {
         try {
@@ -134,6 +135,7 @@ export default function Page() {
         setPrice(item.price);
         setImg(item.img);
         setMyFile(item.img);
+        
     };
     const handleSelectedFile = (e: any) => {
         if (e.target.files.length > 0) {
@@ -186,7 +188,7 @@ export default function Page() {
                 >
                     <i className="fa fa-plus me-2"></i>เพิ่มรายการ
                 </button>
-                <table className="mt-3 table table-bordered table-striped">
+                <table className="mt-3 table table-bordered">
                     <thead>
                         <tr>
                             <th style={{ width: "200px", }}>ภาพ</th>

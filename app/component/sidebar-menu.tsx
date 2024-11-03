@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 "use client";
 
@@ -7,18 +8,19 @@ import config from "../config";
 import { useRouter } from "next/navigation";
 import React from "react";
 import Link from "next/link";
+import axios from "axios";
 
 export default function SidebarMenu() {
     const [name, setName] = useState("");
     const [status, setStatus] = useState("");
     const router = useRouter();
+    const [userLevel, setUserLevel] = useState("");
     useEffect(() => {
         const name = localStorage.getItem("next_name");
         const status = localStorage.getItem("next_user_status");
         setName(name ?? '');
         setStatus(status ?? '');
-        console.log("Name:", name);
-        console.log("Status:", status);
+        getUserLevel();
     }, [])
     const signOut = async () => {
         try {
@@ -50,10 +52,33 @@ export default function SidebarMenu() {
             })
         }
     }
+    const getUserLevel = async () => {
+        try {
+            const token = localStorage.getItem(config.token);
+
+            if (token !== null) {
+                const headers = {
+                    'Authorization': 'Bearer ' + token
+                }
+
+                const res = await axios.get(config.apiServer + '/api/user/getLevelByToken', { headers });
+
+                setUserLevel(res.data.level);
+
+            }
+        } catch (e: any) {
+            Swal.fire({
+                title: 'error',
+                text: e.message,
+                icon: 'error'
+            })
+        }
+    }
+
     return (
         <div>
             <aside className="main-sidebar sidebar-dark-primary elevation-4">
-                <p className="text-slate-400 text-2xl font-bold  text-opacity-10 text-center pt-4">AdminLTE 3</p>
+                <p className="text-slate-400 text-2xl font-bold   text-center pt-4">POS Food</p>
                 <div className="sidebar">
                     <div className="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div className="image">
@@ -70,30 +95,91 @@ export default function SidebarMenu() {
                     </div>
                     <nav className="mt-2">
                         <ul className="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li className="nav-item">
-                                <Link href="/backoffice/food-type" className="nav-link">
-                                    <i className="nav-icon fas fa-th"></i>
-                                    ประเภทอาหาร
-                                </Link>
-                            </li>
+                            {userLevel === 'admin' && (
+                                <>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/dashboard" className="nav-link">
+                                            <i className="nav-icon fas fa-tachometer-alt"></i>
+                                            <p>แดชบอร์ด</p>
+                                        </Link>
+                                    </li>
+
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/user" className="nav-link">
+                                            <i className="nav-icon fas fa-users"></i>
+                                            <p>จัดการพนักงาน</p>
+                                        </Link>
+                                    </li></>
+                            )}
+
+                            {userLevel === 'admin' || userLevel === 'user' ?
                                 <li className="nav-item">
-                                    <Link href="/backoffice/food-size" className="nav-link">
-                                        <i className="nav-icon fas fa-list"></i>
-                                        ขนาด
+                                    <Link href="/backoffice/sale" className="nav-link">
+                                        <i className="nav-icon fas fa-dollar-sign"></i>
+                                        <p>ขาย</p>
                                     </Link>
                                 </li>
-                                <li className="nav-item">
-                                    <Link href="/backoffice/taste" className="nav-link">
-                                        <i className="nav-icon fas fa-file-alt"></i>
-                                        รสชาติอาหาร
-                                    </Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link href="/backoffice/food" className="nav-link">
-                                        <i className="nav-icon fas fa-utensils"></i>
-                                        อาหาร
-                                    </Link>
-                                </li>
+                                : <></>
+                            }
+
+                            {userLevel === 'admin' && (
+                                <>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/food-type" className="nav-link">
+                                            <i className="nav-icon fas fa-th"></i>
+                                            <p>ประเภทอาหาร</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/food-size" className="nav-link">
+                                            <i className="nav-icon fas fa-list"></i>
+                                            <p>ขนาด</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/taste" className="nav-link">
+                                            <i className="nav-icon fas fa-file-alt"></i>
+                                            <p>รสชาติอาหาร</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/food" className="nav-link">
+                                            <i className="nav-icon fas fa-utensils"></i>
+                                            <p>อาหาร</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/food-paginate" className="nav-link">
+                                            <i className="nav-icon fas fa-utensils"></i>
+                                            <p>อาหาร (แบ่งหน้า)</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/organization" className="nav-link">
+                                            <i className="nav-icon fas fa-building"></i>
+                                            <p>ข้อมูลร้าน</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/report-bill-sale" className="nav-link">
+                                            <i className="nav-icon fas fa-file-alt"></i>
+                                            <p>รายงานการขาย</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/report-sum-sale-per-day" className="nav-link">
+                                            <i className="nav-icon fas fa-calendar"></i>
+                                            <p>สรุปยอดขายรายวัน</p>
+                                        </Link>
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link href="/backoffice/report-sum-sale-per-month" className="nav-link">
+                                            <i className="nav-icon fas fa-calendar"></i>
+                                            <p>สรุปยอดขายรายเดือน</p>
+                                        </Link>
+                                    </li>
+                                </>
+                            )}
                         </ul>
                     </nav>
                 </div>

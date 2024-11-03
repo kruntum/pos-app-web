@@ -125,7 +125,7 @@ export default function Page() {
                     >
                         <i className="fa fa-plus me-2"></i>เพิ่มรายการ
                     </button>
-                    <table className="mt-3 table table-bordered table-striped">
+                    <table className="mt-3 table table-bordered">
                         <thead>
                             <tr>
                                 <th style={{ width: "150px" }}>ประเภทอาหาร</th>

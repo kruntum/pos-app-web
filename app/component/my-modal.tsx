@@ -4,10 +4,11 @@ import React, { ReactNode } from "react";
 interface ModalProps {
     id: string;
     title: string;
+    modalSize?: string;
     children: ReactNode;
 }
 
-const Modal: React.FC<ModalProps> = ({ id, title, children }) => {
+const Modal: React.FC<ModalProps> = ({ id, title, modalSize,children }) => {
     return (
             <div
                 className="modal fade"
@@ -16,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ id, title, children }) => {
                 aria-labelledby="exampleModalLabel"
                 aria-hidden="true"
             >
-                <div className="modal-dialog">
+                <div className={`modal-dialog ${modalSize}`}>
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1 className="modal-title fs-5" id="exampleModalLabel">
